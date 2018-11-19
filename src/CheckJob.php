@@ -28,7 +28,7 @@ class CheckJob extends BaseObject implements JobInterface
     public function init()
     {
         parent::init();
-        $this->cache = Instance::ensure(CacheInterface::class, $this->cache);
+        $this->cache = Instance::ensure($this->cache, CacheInterface::class);
     }
 
     /**

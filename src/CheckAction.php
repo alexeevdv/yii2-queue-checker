@@ -50,9 +50,9 @@ class CheckAction extends Action
     public function init()
     {
         parent::init();
-        $this->cache = Instance::ensure(CacheInterface::class, $this->cache);
-        $this->job = Instance::ensure(JobInterface::class, $this->job);
-        $this->queue = Instance::ensure(Queue::class, $this->queue);
+        $this->cache = Instance::ensure($this->cache, CacheInterface::class);
+        $this->job = Instance::ensure($this->job, JobInterface::class);
+        $this->queue = Instance::ensure($this->queue, Queue::class);
     }
 
     /**
