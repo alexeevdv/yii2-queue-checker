@@ -27,7 +27,7 @@ class SmsAlarm extends BaseObject implements AlarmInterface
     /**
      * @var string
      */
-    public $template;
+    public $template = 'Queue is down for {downtime}';
 
     /**
      * @var array|string Recipients
@@ -40,11 +40,6 @@ class SmsAlarm extends BaseObject implements AlarmInterface
     public $from;
 
     /**
-     * @var string
-     */
-    private $_defaultTemplate = 'Queue is down for {downtime}';
-
-    /**
      * @inheritdoc
      * @throws InvalidConfigException
      */
@@ -52,6 +47,7 @@ class SmsAlarm extends BaseObject implements AlarmInterface
     {
         parent::init();
         $this->provider = Instance::ensure($this->provider, ProviderInterface::class);
+        $this->formatter = Instance::ensure($this->formatter, Formatter::class);
     }
 
     /**
@@ -59,12 +55,7 @@ class SmsAlarm extends BaseObject implements AlarmInterface
      */
     public function send($downtime)
     {
-        $message = $this->provider->compose($this->template, ['downtime' => $downtime]);
-        if ($this->template === null) {
-            $message->setBody(strtr($this->_defaultTemplate, [
-                'downtime' => $this->formatter->asDuration($downtime),
-            ]));
-        }
+        $message = $this->provider->compose($this->template, ['downtime' => $this->formatter->asDuration($downtime)]);
         if ($this->to !== null) {
             $message->setTo($this->to);
         }

@@ -2,13 +2,15 @@
     "name": "alexeevdv/yii2-queue-checker",
     "type": "yii2-extension",
     "require": {
-        "mikk150/yii2-sms": "^1.0",
         "yiisoft/yii2": "^2.0",
         "yiisoft/yii2-queue": "^2.1"
     },
     "require-dev": {
         "codeception/codeception": "^2.5",
         "yiisoft/yii2-coding-standards": "^2.0"
+    },
+    "suggest": {
+        "mikk150/yii2-sms": "Allows to send alarms via SMS"
     },
     "license": "MIT",
     "authors": [

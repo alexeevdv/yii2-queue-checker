@@ -7,10 +7,11 @@ php:
 
 install:
 - composer install --no-interaction
+- composer require --no-interaction  mikk150/yii2-sms ^1.0
 
 script:
 - vendor/bin/phpcs --standard=vendor/yiisoft/yii2-coding-standards/Yii2 --extensions=php src
-#- php vendor/bin/codecept run --coverage --coverage-xml
+- php vendor/bin/codecept run --coverage --coverage-xml
 
 after_success:
-#- bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)

@@ -46,9 +46,9 @@ class CheckAction extends Action
     public $queue = 'queue';
 
     /**
-     * @var AlarmInterface|array|string
+     * @var AlarmInterface[]|array
      */
-    public $alarm = 'queueCheckerAlarm';
+    public $alarms;
 
     /**
      * @inheritdoc
@@ -60,7 +60,12 @@ class CheckAction extends Action
         $this->cache = Instance::ensure($this->cache, CacheInterface::class);
         $this->job = Instance::ensure($this->job, JobInterface::class);
         $this->queue = Instance::ensure($this->queue, Queue::class);
-        $this->alarm = Instance::ensure($this->alarm, AlarmInterface::class);
+        if (!is_array($this->alarms)) {
+            throw new InvalidConfigException('`alarms` are required.');
+        }
+        $this->alarms = array_map(function ($alarm) {
+            return Instance::ensure($alarm, AlarmInterface::class);
+        }, $this->alarms);
     }
 
     /**
@@ -73,7 +78,8 @@ class CheckAction extends Action
         $lastQueueCheck = $this->cache->getOrSet(CheckJob::LAST_QUEUE_CHECK_TIMESTAMP_CACHE_KEY, function () {
             return time();
         });
-        if (time() - $lastQueueCheck < $this->queueDownTimeout) {
+        $queueDownTime = time() - $lastQueueCheck;
+        if ($queueDownTime < $this->queueDownTimeout) {
             return ExitCode::OK;
         }
 
@@ -82,8 +88,10 @@ class CheckAction extends Action
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
-        $this->alarm->send(time() - $lastQueueCheck);
         $this->cache->set(self::LAST_ALARM_TIMESTAMP_CACHE_KEY, time());
+        foreach ($this->alarms as $alarm) {
+            $alarm->send($queueDownTime);
+        }
         return ExitCode::UNSPECIFIED_ERROR;
     }
 }
