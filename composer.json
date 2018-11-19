@@ -2,13 +2,13 @@
     "name": "alexeevdv/yii2-queue-checker",
     "type": "yii2-extension",
     "require": {
+        "mikk150/yii2-sms": "^1.0",
         "yiisoft/yii2": "^2.0",
-        "yiisoft/yii2-queue": "^2.1",
-        "mikk150/yii2-sms": "^1.0"
+        "yiisoft/yii2-queue": "^2.1"
     },
     "require-dev": {
-        "yiisoft/yii2-coding-standards": "^2.0",
-        "codeception/codeception": "^2.5"
+        "codeception/codeception": "^2.5",
+        "yiisoft/yii2-coding-standards": "^2.0"
     },
     "license": "MIT",
     "authors": [
@@ -17,6 +17,9 @@
             "email": "mail@alexeevdv.ru"
         }
     ],
+    "config": {
+        "sort-packages": true
+    },
     "repositories": [
         {
             "type": "composer",
