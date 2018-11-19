@@ -4,6 +4,7 @@
 
 
 ```php
+<?php
 return [
 // ...
    'components' => [
@@ -51,13 +52,13 @@ return [
 ### Custom alarm example
 
 ```php
-
+<?php
 namespace common\components;
 
-use alexeevdv\yii\queue\checker\AlarmInterface
+use alexeevdv\yii\queue\checker\AlarmInterface;
 use yii\base\BaseObject;
 use yii\di\Instance;
-use yii\httpclient\Client
+use yii\httpclient\Client;
 
 class WebhookAlarm extends BaseObject implements AlarmInterface 
 {
@@ -75,6 +76,7 @@ class WebhookAlarm extends BaseObject implements AlarmInterface
 ```
 
 ```php
+<?php
 return [
 // ...
    'controllerMap' => [
