@@ -1,4 +1,5 @@
-#Yii2 queue checker
+Yii2 queue checker
+------------------
 
 [![Build Status](https://travis-ci.org/alexeevdv/yii2-queue-checker.svg?branch=master)](https://travis-ci.org/alexeevdv/yii2-queue-checker) 
 [![codecov](https://codecov.io/gh/alexeevdv/yii2-queue-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/alexeevdv/yii2-queue-checker)
