@@ -2,7 +2,7 @@
     "name": "alexeevdv/yii2-queue-checker",
     "type": "yii2-extension",
     "require": {
-        "yiisoft/yii2": "2.0.15.1",
+        "yiisoft/yii2": "^2.0",
         "yiisoft/yii2-queue": "^2.1",
         "mikk150/yii2-sms": "^1.0"
     },
