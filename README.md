@@ -41,9 +41,54 @@ return [
        ],
    ],
 // ...
-],
+];
 ```
 
 ```bash
 ./yii queue-checker
+```
+
+### Custom alarm example
+
+```php
+
+namespace common\components;
+
+use alexeevdv\yii\queue\checker\AlarmInterface
+use yii\base\BaseObject;
+use yii\di\Instance;
+use yii\httpclient\Client
+
+class WebhookAlarm extends BaseObject implements AlarmInterface 
+{
+    public $httpClient = Client::class;
+    
+    public $webHook;
+
+    public function send($downtime)
+    {
+        Instance::ensure($this->httpClient, Client::class)->post($this->webhook, [
+            'downtime' => $downtime,
+        ]);
+    }
+}
+```
+
+```php
+return [
+// ...
+   'controllerMap' => [
+       'queue-checker' => [
+           'class' => \alexeevdv\yii\queue\checker\CheckController::class,
+           'checkActionConfig' => [
+               'class' => \alexeevdv\yii\queue\checker\CheckAction::class,
+               'alarm' => [
+                    'class' => \common\components\WebhookAlarm::class,
+                    'webhook' => 'http://your-webhook-here',
+               ],
+           ],
+       ],
+   ],
+// ...
+];
 ```
