@@ -35,6 +35,21 @@ class MailerAlarm extends BaseObject implements AlarmInterface
     public $formatter = 'formatter';
 
     /**
+     * @var string|array Recipients
+     */
+    public $from;
+
+    /**
+     * @var string|array Sender
+     */
+    public $to;
+
+    /**
+     * @var string
+     */
+    public $subject = 'Queue status notification';
+
+    /**
      * @inheritdoc
      * @throws InvalidConfigException
      */
@@ -56,6 +71,13 @@ class MailerAlarm extends BaseObject implements AlarmInterface
                 'downtime' => $this->formatter->asDuration($downtime)
             ]));
         }
+        if ($this->to !== null) {
+            $message->setTo($this->to);
+        }
+        if ($this->from !== null) {
+            $message->setFrom($this->from);
+        }
+        $message->setSubject($this->subject);
         $message->send();
     }
 }

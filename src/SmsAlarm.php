@@ -30,6 +30,16 @@ class SmsAlarm extends BaseObject implements AlarmInterface
     public $template;
 
     /**
+     * @var array|string Recipients
+     */
+    public $to;
+
+    /**
+     * @var string Sender
+     */
+    public $from;
+
+    /**
      * @var string
      */
     private $_defaultTemplate = 'Queue is down for: {downtime}';
@@ -54,6 +64,12 @@ class SmsAlarm extends BaseObject implements AlarmInterface
             $message->setBody(strtr($this->_defaultTemplate, [
                 'downtime' => $this->formatter->asDuration($downtime),
             ]));
+        }
+        if ($this->to !== null) {
+            $message->setTo($this->to);
+        }
+        if ($this->from !== null) {
+            $message->setFrom($this->from);
         }
         $message->send();
     }
