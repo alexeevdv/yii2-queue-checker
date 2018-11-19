@@ -16,15 +16,22 @@ use yii\queue\Queue;
  */
 class CheckAction extends Action
 {
+    const LAST_ALARM_TIMESTAMP_CACHE_KEY = self::class;
+
     /**
      * @var CacheInterface|array|string
      */
     public $cache = 'cache';
 
     /**
-     * @var int
+     * @var int Seconds before queue considered to be down
      */
-    public $alarmDelay = 600;
+    public $queueDownTimeout = 600;
+
+    /**
+     * @var int Seconds from last alarm
+     */
+    public $alarmInterval = 300;
 
     /**
      * @var JobInterface|array|string
@@ -63,16 +70,20 @@ class CheckAction extends Action
     {
         $this->queue->push($this->job);
 
-        $queueLastCheck = $this->cache->getOrSet(CheckJob::LAST_QUEUE_CHECK_TIMESTAMP_CACHE_KEY, function () {
+        $lastQueueCheck = $this->cache->getOrSet(CheckJob::LAST_QUEUE_CHECK_TIMESTAMP_CACHE_KEY, function () {
             return time();
         });
-
-        if (time() - $queueLastCheck < $this->alarmDelay) {
+        if (time() - $lastQueueCheck < $this->queueDownTimeout) {
             return ExitCode::OK;
         }
 
-        $this->alarm->send(time() - $queueLastCheck);
-        $this->cache->set(CheckJob::LAST_QUEUE_CHECK_TIMESTAMP_CACHE_KEY, time());
+        $lastAlarm = $this->cache->get(self::LAST_ALARM_TIMESTAMP_CACHE_KEY);
+        if ($lastAlarm && time() - $lastAlarm < $this->alarmInterval) {
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        $this->alarm->send(time() - $lastQueueCheck);
+        $this->cache->set(self::LAST_ALARM_TIMESTAMP_CACHE_KEY, time());
         return ExitCode::UNSPECIFIED_ERROR;
     }
 }

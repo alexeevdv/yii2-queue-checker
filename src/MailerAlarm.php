@@ -27,7 +27,7 @@ class MailerAlarm extends BaseObject implements AlarmInterface
     /**
      * @var string
      */
-    public $template = 'Queue is down for: {downtime}';
+    public $template = 'Queue is down for {downtime}';
 
     /**
      * @var Formatter|array|string
