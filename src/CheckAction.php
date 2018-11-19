@@ -53,6 +53,7 @@ class CheckAction extends Action
         $this->cache = Instance::ensure($this->cache, CacheInterface::class);
         $this->job = Instance::ensure($this->job, JobInterface::class);
         $this->queue = Instance::ensure($this->queue, Queue::class);
+        $this->alarm = Instance::ensure($this->alarm, AlarmInterface::class);
     }
 
     /**
