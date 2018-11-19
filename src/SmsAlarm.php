@@ -62,7 +62,7 @@ class SmsAlarm extends BaseObject implements AlarmInterface
         $message = $this->provider->compose($this->template, ['downtime' => $downtime]);
         if ($this->template === null) {
             $message->setBody(strtr($this->_defaultTemplate, [
-                'downtime' => $this->formatter->asDuration($downtime),
+                '{downtime}' => $this->formatter->asDuration($downtime),
             ]));
         }
         if ($this->to !== null) {

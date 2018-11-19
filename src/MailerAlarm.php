@@ -68,7 +68,7 @@ class MailerAlarm extends BaseObject implements AlarmInterface
         $message = $this->mailer->compose($this->view, ['downtime' => $downtime]);
         if ($this->view === null) {
             $message->setTextBody(strtr($this->template, [
-                'downtime' => $this->formatter->asDuration($downtime)
+                '{downtime}' => $this->formatter->asDuration($downtime)
             ]));
         }
         if ($this->to !== null) {
